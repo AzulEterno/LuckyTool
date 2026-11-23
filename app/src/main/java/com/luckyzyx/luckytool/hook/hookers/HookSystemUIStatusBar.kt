@@ -2,7 +2,11 @@ package com.luckyzyx.luckytool.hook.hookers
 
 import com.highcapable.yukihookapi.hook.entity.YukiBaseHooker
 import com.luckyzyx.luckytool.hook.scopes.systemui.CustomMusicFluidCloudWhitelist
+import com.luckyzyx.luckytool.hook.scopes.systemui.DYNAMIC_ISLAND_MIN_OS
+import com.luckyzyx.luckytool.hook.scopes.systemui.DYNAMIC_ISLAND_PLAYBACK_ICON_KEY
+import com.luckyzyx.luckytool.hook.scopes.systemui.DYNAMIC_ISLAND_RING_KEY
 import com.luckyzyx.luckytool.hook.scopes.systemui.DisableMediaMusicFluidCloudBlacklist
+import com.luckyzyx.luckytool.hook.scopes.systemui.DynamicIslandProgress
 import com.luckyzyx.luckytool.hook.scopes.systemui.StatusBarIconOrder
 import com.luckyzyx.luckytool.hook.statusbar.StatusBarBattery
 import com.luckyzyx.luckytool.hook.statusbar.StatusBarClock
@@ -60,6 +64,13 @@ class HookSystemUIStatusBar(val dexKitBridge: DexKitBridge) : YukiBaseHooker() {
 
         //状态栏电池
         loadHooker(StatusBarBattery)
+
+        if (osCode >= DYNAMIC_ISLAND_MIN_OS) {
+            val prefs = preferences(ModulePrefs)
+            val ring = prefs.getBoolean(DYNAMIC_ISLAND_RING_KEY, false)
+            val playbackIcon = prefs.getBoolean(DYNAMIC_ISLAND_PLAYBACK_ICON_KEY, false)
+            if (ring || playbackIcon) loadHooker(DynamicIslandProgress(ring, playbackIcon))
+        }
 
         //自定义音乐流体云白名单
         if (osCode >= 33) {

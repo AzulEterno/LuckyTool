@@ -8,6 +8,7 @@ import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.drawable.ColorDrawable
+import android.graphics.drawable.Icon
 import android.view.ContextThemeWrapper
 import android.view.View
 import android.view.View.MeasureSpec
@@ -133,6 +134,76 @@ class NotificationProgressChipTest {
 
     @Test
     @Config(qualifiers = "mdpi")
+    fun scalesNotificationArtworkAndTrackToStockIconSize() {
+        val artwork = Bitmap.createBitmap(16, 8, Bitmap.Config.ARGB_8888).apply { eraseColor(Color.MAGENTA) }
+        val task = requireNotNull(task("a:1", context.packageName, 50)).copy(smallIcon = Icon.createWithBitmap(artwork))
+        val chip = NotificationProgressChip(context)
+        chip.show(listOf(task), "50% complete")
+        chip.applyStockIconScale(.75f)
+        chip.applyTint(Color.BLACK)
+        chip.measure(
+            MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED),
+            MeasureSpec.makeMeasureSpec(24, MeasureSpec.EXACTLY),
+        )
+        chip.layout(0, 0, chip.measuredWidth, chip.measuredHeight)
+
+        val output = Bitmap.createBitmap(chip.width, chip.height, Bitmap.Config.ARGB_8888)
+        try {
+            chip.draw(Canvas(output))
+            assertEquals((4..15).toList(), (0 until output.width).filter { output.getPixel(it, 12) == Color.MAGENTA })
+            val iconRows = (0 until output.height).filter { output.getPixel(10, it) == Color.MAGENTA }
+            assertEquals((9..14).toList(), iconRows)
+            val pillAlpha = Color.alpha(output.getPixel(19, 8))
+            assertTrue(pillAlpha > 0)
+            assertEquals(iconRows, (0 until output.height).filter { Color.alpha(output.getPixel(19, it)) > pillAlpha })
+        } finally {
+            output.recycle()
+            artwork.recycle()
+        }
+    }
+
+    @Test
+    @Config(qualifiers = "mdpi")
+    fun switchesBetweenNotificationArtworkAndAppArtworkAsTasksChange() {
+        val app = context.packageName
+        shadowOf(context.packageManager).setApplicationIcon(app, ColorDrawable(Color.MAGENTA))
+        val chip = NotificationProgressChip(context)
+        val other = task("a:2", app, 65)
+        fun render(tasks: List<NotificationProgressTask>): Int {
+            chip.show(tasks, "In progress")
+            chip.measure(
+                MeasureSpec.makeMeasureSpec(33, MeasureSpec.AT_MOST),
+                MeasureSpec.makeMeasureSpec(24, MeasureSpec.EXACTLY),
+            )
+            chip.layout(0, 0, chip.measuredWidth, chip.measuredHeight)
+            assertEquals(1, chip.measuredBars)
+            val output = Bitmap.createBitmap(chip.width, chip.height, Bitmap.Config.ARGB_8888)
+            return try {
+                chip.draw(Canvas(output))
+                output.getPixel(12, 12)
+            } finally {
+                output.recycle()
+            }
+        }
+        fun withIcon(color: Int): NotificationProgressTask {
+            val artwork = Bitmap.createBitmap(16, 16, Bitmap.Config.ARGB_8888).apply { eraseColor(color) }
+            val notification = Notification.Builder(context, "progress")
+                .setSmallIcon(Icon.createWithBitmap(artwork))
+                .setProgress(100, 50, false)
+                .build()
+            return requireNotNull(NotificationProgressTask.from("a:1", app, notification))
+        }
+
+        val first = withIcon(Color.GREEN)
+        assertEquals(Color.GREEN, render(listOf(first)))
+        assertEquals(Color.MAGENTA, render(listOf(first, other)))
+        assertEquals(Color.GREEN, render(listOf(first)))
+        assertEquals(Color.BLUE, render(listOf(withIcon(Color.BLUE))))
+        assertEquals(Color.MAGENTA, render(listOf(other)))
+    }
+
+    @Test
+    @Config(qualifiers = "mdpi")
     fun animatesOnlyTheIndeterminateTrackAndRespectsDisabledAnimations() {
         val themed = ContextThemeWrapper(context, android.R.style.Theme_Material_Light)
         val accent = themeAccent(themed)
@@ -184,7 +255,6 @@ class NotificationProgressChipTest {
 
     private fun notification(value: Int, max: Int = 100, indeterminate: Boolean = false) =
         Notification.Builder(context, "progress")
-            .setSmallIcon(android.R.drawable.stat_sys_download)
             .setProgress(max, value, indeterminate)
             .build()
 

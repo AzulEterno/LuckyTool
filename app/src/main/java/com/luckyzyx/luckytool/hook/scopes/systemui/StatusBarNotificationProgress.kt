@@ -69,6 +69,7 @@ internal object StatusBarNotificationProgress : YukiBaseHooker() {
         val measureIcon = iconType.resolve().firstMethodOrNull { name = "onMeasure"; parameterCount = 2 } ?: return
         val drawIcon = iconType.resolve().firstMethodOrNull { name = "onDraw"; parameterCount = 1 } ?: return
         val getIconNotification = iconType.getMethod("getNotification")
+        val getIconScale = runCatching { iconType.getMethod("getIconScale") }.getOrNull()
         val getVisibleState = iconType.getMethod("getVisibleState")
         val allEntries = pipelineType.getMethod("getAllNotifs")
         val entryByKey = pipelineType.getMethod("getEntry", String::class.java)
@@ -112,7 +113,8 @@ internal object StatusBarNotificationProgress : YukiBaseHooker() {
 
         fun canShow(chip: NotificationProgressChip): Boolean {
             val controller = status ?: return false
-            return !switchingUser && shadeClosed && getState.invoke(controller) == 0 && isDozing.invoke(controller) == false &&
+            // The stock icon row controls its own visibility during shade transitions.
+            return !switchingUser && getState.invoke(controller) == 0 && isDozing.invoke(controller) == false &&
                 chip.context.getSystemService(KeyguardManager::class.java)?.isKeyguardLocked == false
         }
 
@@ -158,12 +160,8 @@ internal object StatusBarNotificationProgress : YukiBaseHooker() {
 
         fun updateShade(event: Any?) {
             if (!expansionEvent.isInstance(event)) return
-            val closed = getExpanded.invoke(event) == false && getTracking.invoke(event) == false &&
+            shadeClosed = getExpanded.invoke(event) == false && getTracking.invoke(event) == false &&
                 (getFraction.invoke(event) as? Float) == 0f
-            if (shadeClosed != closed) {
-                shadeClosed = closed
-                refreshLater()
-            }
         }
 
         pipelineInit.hook {
@@ -257,6 +255,8 @@ internal object StatusBarNotificationProgress : YukiBaseHooker() {
                         else MeasureSpec.makeMeasureSpec(MeasureSpec.getSize(widthSpec), MeasureSpec.AT_MOST)
                     val height = host.layoutParams?.height?.takeIf { it > 0 } ?: MeasureSpec.getSize(heightSpec)
                     val chip = current.chip
+                    val scale = runCatching { getIconScale?.invoke(host) as? Float }.getOrNull()
+                    chip.applyStockIconScale(scale ?: 1f)
                     chip.layoutDirection = host.layoutDirection
                     chip.measure(fitWidth, MeasureSpec.makeMeasureSpec(height, MeasureSpec.EXACTLY))
                     if (chip.measuredWidth == 0) return@runCatching current.slot.update(null)
@@ -355,7 +355,7 @@ internal object StatusBarNotificationProgress : YukiBaseHooker() {
                         runCatching {
                             if (binding !== current || view !== current.slot.host || !view.isShown ||
                                 view.parent !== current.container() || getVisibleState.invoke(view) != 0 ||
-                                view.width != chip.width || view.height != chip.height || !canShow(chip)
+                                view.width != chip.width || view.height != chip.height || !shadeClosed || !canShow(chip)
                             ) return@runCatching
                             val user = activeUser()
                             if (user == null || user != selectedUser) return@runCatching
@@ -421,7 +421,7 @@ internal object StatusBarNotificationProgress : YukiBaseHooker() {
         fun presentProgress(remeasure: Boolean) {
             if (tasks.isEmpty()) return
             chip.show(tasks, description())
-            if (remeasure) container()?.requestLayout()
+            if (remeasure || chip.isLayoutRequested) container()?.requestLayout()
             slot.describe(chip.contentDescription)
             slot.host?.invalidate()
         }

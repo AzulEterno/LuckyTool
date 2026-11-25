@@ -11,8 +11,6 @@ import com.luckyzyx.luckytool.hook.scopes.games.EnableGameRunInBackground
 import com.luckyzyx.luckytool.hook.scopes.games.EnableSupportCompetitionMode
 import com.luckyzyx.luckytool.hook.scopes.games.EnableXModeFeature
 import com.luckyzyx.luckytool.hook.scopes.games.RemoveGameAssistantTemperatureDetection
-import com.luckyzyx.luckytool.hook.scopes.games.RemoveRootCheck
-import com.luckyzyx.luckytool.hook.scopes.games.RemoveSomeVipLimit
 import com.luckyzyx.luckytool.hook.scopes.games.RemoveStartupAnimation
 import com.luckyzyx.luckytool.hook.scopes.games.RemoveToolRecommendationCard
 import com.luckyzyx.luckytool.hook.scopes.games.RemoveWelfarePage
@@ -38,9 +36,6 @@ object HookOplusGames : YukiBaseHooker() {
             //HookCloudConditionFeature
             if (!isNew) loadHooker(CloudConditionFeature(appVer, dexKitBridge))
             //游戏滤镜-->Root检测
-            if (preferences(ModulePrefs).getBoolean("remove_root_check", false)) {
-                loadHooker(RemoveRootCheck(dexKitBridge))
-            }
             //移除启动动画
             if (preferences(ModulePrefs).getBoolean("remove_startup_animation", false)) {
                 loadHooker(RemoveStartupAnimation(dexKitBridge))
@@ -74,9 +69,6 @@ object HookOplusGames : YukiBaseHooker() {
             loadHooker(EnableXModeFeature)
         }
         //移除部分VIP限制
-        if (preferences(ModulePrefs).getBoolean("remove_some_vip_limit", false)) {
-            loadHooker(RemoveSomeVipLimit)
-        }
         //移除游戏助手温度检测
         if (preferences(ModulePrefs).getBoolean("remove_game_assistant_temperature_detection", false)) {
             loadHooker(RemoveGameAssistantTemperatureDetection)

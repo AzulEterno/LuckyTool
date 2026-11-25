@@ -5,8 +5,6 @@ import com.luckyzyx.luckytool.hook.scopes.packageinstaller.DisableStartAppDetail
 import com.luckyzyx.luckytool.hook.scopes.packageinstaller.FixInstallButtonDisplayException
 import com.luckyzyx.luckytool.hook.scopes.packageinstaller.HookInstallAppProgress
 import com.luckyzyx.luckytool.hook.scopes.packageinstaller.HookOPlusUninstallAppProgress
-import com.luckyzyx.luckytool.hook.scopes.packageinstaller.HookOplusPackageInstallerActivity
-import com.luckyzyx.luckytool.hook.scopes.packageinstaller.HookUninstallerActivity
 import com.luckyzyx.luckytool.hook.scopes.packageinstaller.ShowMoreApkPackageInformation
 import com.luckyzyx.luckytool.utils.DexkitUtils
 import com.luckyzyx.luckytool.utils.ModulePrefs
@@ -31,13 +29,11 @@ object HookPackageInstaller : YukiBaseHooker() {
             }.singleOrNull() ?: return@create
 
             //Source OPlusPackageInstallerActivity
-            loadHooker(HookOplusPackageInstallerActivity(dexKitBridge))
 
             //Source InstallAppProgress
             loadHooker(HookInstallAppProgress(dexKitBridge))
 
             //Source UninstallerActivity
-            loadHooker(HookUninstallerActivity(dexKitBridge))
 
             //Source OPlusUninstallAppProgress
             loadHooker(HookOPlusUninstallAppProgress(dexKitBridge))

@@ -84,9 +84,6 @@ class HookGlobalFeatureProvider(val dexKitBridge: DexKitBridge) : YukiBaseHooker
                 put("com.android.settings.screen_physics_size_cm", true)
             }
             //Source Settings VerificationDialog isVerificationDialogDisabled 禁用设备管理器验证对话框
-            if (preferences(ModulePrefs).getBoolean("disable_device_admin_verification_dialog", false)) {
-                put("com.android.settings.verification_dialog.disable", true)
-            }
             //Source Settings SmartTouchController isSupportSmartTouch 隔膜触控
             if (preferences(ModulePrefs).getBoolean("enable_touch_membrane_protector_mode", false)) {
                 put("feature.super_settings_smart_touch.support", true)

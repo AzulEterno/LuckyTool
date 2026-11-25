@@ -6,16 +6,12 @@ import com.luckyzyx.luckytool.hook.globals.HookGlobalPmsFeature
 import com.luckyzyx.luckytool.hook.globals.HookGlobalSystemConfig
 import com.luckyzyx.luckytool.hook.globals.HookGlobalSystemProperties
 import com.luckyzyx.luckytool.hook.scopes.android.AllowThirdPartyInstaller
-import com.luckyzyx.luckytool.hook.scopes.android.ADBInstallConfirm
 import com.luckyzyx.luckytool.hook.scopes.android.ActionButtonKeyInterceptor
-import com.luckyzyx.luckytool.hook.scopes.android.AllowUntrustedTouch
 import com.luckyzyx.luckytool.hook.scopes.android.AppSplashScreen
 import com.luckyzyx.luckytool.hook.scopes.android.BatteryOptimizationWhitelist
 import com.luckyzyx.luckytool.hook.scopes.android.DarkModeService
-import com.luckyzyx.luckytool.hook.scopes.android.DisableAccessibilityWarningDialog
 import com.luckyzyx.luckytool.hook.scopes.android.DisableAppArchiving
 import com.luckyzyx.luckytool.hook.scopes.android.DisableAudioFocus
-import com.luckyzyx.luckytool.hook.scopes.android.DisableMaliciousAppIntercept
 import com.luckyzyx.luckytool.hook.scopes.android.EnableKeepNotificationWhenAppStop
 import com.luckyzyx.luckytool.hook.scopes.android.EnableVideoMemcFrameInsertion
 import com.luckyzyx.luckytool.hook.scopes.android.ForceAllAppsSupportSplitScreen
@@ -23,20 +19,16 @@ import com.luckyzyx.luckytool.hook.scopes.android.ForceEnable32BitSupport
 import com.luckyzyx.luckytool.hook.scopes.android.HookFloatMirageWindow
 import com.luckyzyx.luckytool.hook.scopes.android.HookGMSRestrict
 import com.luckyzyx.luckytool.hook.scopes.android.HookIPackageManager
-import com.luckyzyx.luckytool.hook.scopes.android.HookMediaProjectionManager
 import com.luckyzyx.luckytool.hook.scopes.android.HookOplusWifiService
 import com.luckyzyx.luckytool.hook.scopes.android.HookWindowManagerService
 import com.luckyzyx.luckytool.hook.scopes.android.LTPODynamicRefreshRate
 import com.luckyzyx.luckytool.hook.scopes.android.MediaVolumeLevel
 import com.luckyzyx.luckytool.hook.scopes.android.MultiAppConfig
 import com.luckyzyx.luckytool.hook.scopes.android.PanoramaWorkStation
-import com.luckyzyx.luckytool.hook.scopes.android.RemoveAccessDeviceLogDialog
 import com.luckyzyx.luckytool.hook.scopes.android.RemoveAlwaysAllowAppStartList
 import com.luckyzyx.luckytool.hook.scopes.android.RemoveAppUninstallButtonBlackList
-import com.luckyzyx.luckytool.hook.scopes.android.RemovePasswordTimeoutVerification
 import com.luckyzyx.luckytool.hook.scopes.android.RemoveStatusBarTopNotification
 import com.luckyzyx.luckytool.hook.scopes.android.RemoveVPNActiveNotification
-import com.luckyzyx.luckytool.hook.scopes.android.ReplaceSystemRootStateDetection
 import com.luckyzyx.luckytool.hook.scopes.android.ScrollToTopWhiteList
 import com.luckyzyx.luckytool.hook.scopes.android.SetAppUpdateDotDisplayMode
 import com.luckyzyx.luckytool.hook.scopes.android.SystemEnableVolumeKeyControlFlashlight
@@ -83,10 +75,8 @@ object HookAndroid : YukiBaseHooker() {
         loadHooker(AllowThirdPartyInstaller)
 
         //USB安装确认
-        loadHooker(ADBInstallConfirm)
 
         //移除72小时密码验证
-        loadHooker(RemovePasswordTimeoutVerification)
 
         //移除系统截屏延迟
 //        loadHooker(RemoveSystemScreenshotDelay)
@@ -95,7 +85,6 @@ object HookAndroid : YukiBaseHooker() {
         if (osCode >= 26) loadHooker(AppSplashScreen)
 
         //允许不受信任的触摸
-        if (osCode >= 23) loadHooker(AllowUntrustedTouch)
 
         //浮窗
         loadHooker(ZoomWindowConfig())
@@ -115,7 +104,6 @@ object HookAndroid : YukiBaseHooker() {
         if (osCode >= 26) loadHooker(ScrollToTopWhiteList)
 
         //禁用访问设备日志对话框
-        if (osCode >= 26) loadHooker(RemoveAccessDeviceLogDialog)
 
         //LTPO动态刷新率
         loadHooker(LTPODynamicRefreshRate)
@@ -136,7 +124,6 @@ object HookAndroid : YukiBaseHooker() {
         if (osCode >= 26) loadHooker(RemoveAppUninstallButtonBlackList)
 
         //三方应用通话录音保护
-        if (osCode == 30) loadHooker(HookMediaProjectionManager)
 
         //视频动态插帧
         loadHooker(EnableVideoMemcFrameInsertion)
@@ -146,7 +133,6 @@ object HookAndroid : YukiBaseHooker() {
 
         loadHooker(HookFloatMirageWindow)
 
-        loadHooker(ReplaceSystemRootStateDetection)
 
         if (SDK >= A13) loadHooker(ForceEnable32BitSupport)
 
@@ -159,14 +145,8 @@ object HookAndroid : YukiBaseHooker() {
         loadHooker(RemoveAlwaysAllowAppStartList)
 
         //禁用风险应用拦截
-        if (preferences(ModulePrefs).getBoolean("disable_malicious_app_intercept", false)) {
-            if (osCode >= 38) loadHooker(DisableMaliciousAppIntercept)
-        }
 
         //禁用无障碍警告对话框
-        if (preferences(ModulePrefs).getBoolean("disable_accessibility_warning_dialog", false)) {
-            if (osCode >= 38) loadHooker(DisableAccessibilityWarningDialog)
-        }
 
         //禁用音频焦点
         if (preferences(ModulePrefs).getBoolean("disable_audio_focus", false)) {

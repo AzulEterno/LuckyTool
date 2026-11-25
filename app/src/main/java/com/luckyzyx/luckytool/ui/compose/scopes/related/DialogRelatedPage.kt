@@ -39,10 +39,6 @@ object DialogRelatedPage {
             summary = c.getString(R.string.remove_usb_connect_dialog_summary),
         )
         if (SDK >= A13) {
-            switch(
-                key = "remove_access_device_log_dialog",
-                title = c.getString(R.string.remove_access_device_log_dialog),
-            )
         }
         switch(
             key = "remove_start_recording_or_casting_dialog",
@@ -53,11 +49,6 @@ object DialogRelatedPage {
             title = c.getString(R.string.force_show_toast_icon),
         )
         if (getOSVersionCode >= 38) {
-            switch(
-                key = "disable_accessibility_warning_dialog",
-                title = c.getString(R.string.disable_accessibility_warning_dialog),
-                summary = "BottomSheet + Dialog",
-            )
         }
     }
 }

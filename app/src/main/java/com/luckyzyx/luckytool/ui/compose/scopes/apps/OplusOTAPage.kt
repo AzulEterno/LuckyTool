@@ -91,20 +91,8 @@ object OplusOTAPage {
                 )
             }
         }
-        switch(
-            key = "remove_ota_local_update_verity",
-            title = c.getString(R.string.remove_ota_local_update_verity),
-        )
         if (osCode >= 30 && SystemProperties.getBoolean("oplus.opex.merge", false)) {
-            switch(
-                key = "enable_opex_local_install",
-                title = c.getString(R.string.enable_opex_local_install),
-            )
         }
-        switch(
-            key = "disable_dm_verity_verification",
-            title = c.getString(R.string.disable_dm_verity_verification),
-        )
         if (osCode < 37) {
             page(
                 title = c.getString(R.string.extract_ota_information),

@@ -17,9 +17,5 @@ object OplusHealthPage {
         restartEnabled = true,
     ) {
         val c = requireNotNull(context) { "ScopeScreen 未注入 Context" }
-        switch(
-            key = "remove_health_root_check_dialog",
-            title = c.getString(R.string.remove_health_root_check_dialog),
-        )
     }
 }

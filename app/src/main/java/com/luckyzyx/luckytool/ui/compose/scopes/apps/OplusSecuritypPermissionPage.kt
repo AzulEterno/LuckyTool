@@ -41,11 +41,6 @@ object OplusSecuritypPermissionPage {
         val c = requireNotNull(context) { "ScopeScreen 未注入 Context" }
 
         if (getOSVersionCode >= 38) {
-            switch(
-                key = "disable_malicious_app_intercept",
-                title = c.getString(R.string.disable_malicious_app_intercept),
-                summary = c.getString(R.string.need_restart_system),
-            )
         }
         switch(
             key = "app_start_dialog_use_old_version",
@@ -114,9 +109,5 @@ object OplusSecuritypPermissionPage {
                 }
             }
         }
-        switch(
-            key = "auto_unlock_app_ecm_permission_restrict",
-            title = c.getString(R.string.auto_unlock_app_ecm_permission_restrict),
-        )
     }
 }

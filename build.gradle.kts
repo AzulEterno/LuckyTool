@@ -1,11 +1,6 @@
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.tasks.KotlinJvmCompile
-import java.io.FileInputStream
 import java.util.Properties
-
-val keystorePropertiesFile: File = rootProject.file("keystore/keystore.properties")
-val keystoreProperties = Properties()
-keystoreProperties.load(FileInputStream(keystorePropertiesFile))
 
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 plugins {
@@ -18,10 +13,25 @@ plugins {
 
 extra["jdkVersion"] = 21
 
-extra["storeFile"] = keystoreProperties["storeFile"]
-extra["storePassword"] = keystoreProperties["storePassword"]
-extra["keyAlias"] = keystoreProperties["keyAlias"]
-extra["keyPassword"] = keystoreProperties["keyPassword"]
+val workspaceKeystore = providers.environmentVariable("LT_BUILD_KEYSTORE").orNull
+if (workspaceKeystore != null) {
+    val password = providers.environmentVariable("LT_BUILD_KEY_PASSWORD").orNull
+        ?: throw GradleException("Set LT_BUILD_KEY_PASSWORD or run the workspace release script.")
+    extra["storeFile"] = workspaceKeystore
+    extra["storePassword"] = password
+    extra["keyAlias"] = "androiddebugkey"
+    extra["keyPassword"] = password
+} else {
+    val keystorePropertiesFile = file("keystore/keystore.properties")
+    if (!keystorePropertiesFile.isFile) {
+        throw GradleException("Configure keystore/keystore.properties or run the workspace release script.")
+    }
+    val keystoreProperties = Properties().apply { keystorePropertiesFile.inputStream().use { load(it) } }
+    for (key in listOf("storeFile", "storePassword", "keyAlias", "keyPassword")) {
+        extra[key] = keystoreProperties.getProperty(key)
+            ?: throw GradleException("Missing $key in keystore/keystore.properties.")
+    }
+}
 
 tasks {
     register("clean", Delete::class) {

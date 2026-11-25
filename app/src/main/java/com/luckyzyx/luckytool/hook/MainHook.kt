@@ -16,7 +16,6 @@ import com.luckyzyx.luckytool.hook.hookers.HookCalendar
 import com.luckyzyx.luckytool.hook.hookers.HookCamera
 import com.luckyzyx.luckytool.hook.hookers.HookClaw
 import com.luckyzyx.luckytool.hook.hookers.HookCloudService
-import com.luckyzyx.luckytool.hook.hookers.HookCorePatch
 import com.luckyzyx.luckytool.hook.hookers.HookDirectUI
 import com.luckyzyx.luckytool.hook.hookers.HookEngineerMode
 import com.luckyzyx.luckytool.hook.hookers.HookExternalStorage
@@ -58,10 +57,6 @@ import com.luckyzyx.luckytool.hook.hookers.HookThemeStore
 import com.luckyzyx.luckytool.hook.hookers.HookUIEngine
 import com.luckyzyx.luckytool.hook.hookers.HookWeather
 import com.luckyzyx.luckytool.hook.hookers.HookWirelessSettings
-import com.luckyzyx.luckytool.hook.scopes.otherapp.HookADM
-import com.luckyzyx.luckytool.hook.scopes.otherapp.HookAlphaBackupPro
-import com.luckyzyx.luckytool.hook.scopes.otherapp.HookFakeGpsJoyStick
-import com.luckyzyx.luckytool.hook.scopes.otherapp.HookKsWeb
 import org.lsposed.lsparanoid.Obfuscate
 import java.io.File
 
@@ -138,10 +133,6 @@ import java.io.File
         "com.oplus.claw",
         "com.oplus.metis",
         "com.oplus.pscanvas",
-        "ru.kslabs.ksweb",
-        "com.dv.adm",
-        "com.ruet_cse_1503050.ragib.appbackup.pro",
-        "com.theappninjas.fakegpsjoystick",
     ],
 )
 @Obfuscate
@@ -171,9 +162,6 @@ class MainHook : YukiHookXposedModule {
 
         //系统框架
         loadSystem(HookAndroid)
-        //核心破解
-        loadSystem(HookCorePatch)
-
         //系统界面
         loadApp("com.android.systemui", HookSystemUI)
 
@@ -330,10 +318,6 @@ class MainHook : YukiHookXposedModule {
         loadApp("com.oplus.pscanvas", HookPscanvas)
 
         //其他APP
-        loadApp("com.theappninjas.fakegpsjoystick", HookFakeGpsJoyStick)
-        loadApp("com.ruet_cse_1503050.ragib.appbackup.pro", HookAlphaBackupPro)
-        loadApp("ru.kslabs.ksweb", HookKsWeb)
-        loadApp("com.dv.adm", HookADM)
     }
 
 }

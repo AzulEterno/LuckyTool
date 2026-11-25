@@ -17,9 +17,5 @@ object GpsJoyStickPage {
         restartEnabled = true,
     ) {
         val c = requireNotNull(context) { "ScopeScreen 未注入 Context" }
-        switch(
-            key = "gps_joystick_unlock_pro",
-            title = c.getString(R.string.adm_unlock_pro),
-        )
     }
 }

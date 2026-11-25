@@ -29,16 +29,6 @@ object OplusSoundRecorderPage {
         val c = requireNotNull(context) { "ScopeScreen 未注入 Context" }
         val osCode = getOSVersionCode
         if (osCode == 30 && isZh(c)) {
-            switch(
-                key = "enable_record_calls_on_third_party_apps",
-                title = c.getString(R.string.enable_record_calls_on_third_party_apps),
-                summary = arraySummaryLine(
-                    c.getString(R.string.need_restart_system),
-                    c.getString(R.string.enable_record_calls_on_third_party_apps_tips),
-                    c.getString(R.string.enable_record_calls_on_third_party_apps_tips_2),
-                ),
-                enabled = c.checkPackName("com.oplus.audiomonitor") && c.checkPackName("com.oplus.atlas"),
-            )
         }
         if (osCode in 31..33 && isZh(c)) {
             switch(

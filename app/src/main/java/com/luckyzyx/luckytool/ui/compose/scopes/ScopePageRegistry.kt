@@ -74,7 +74,6 @@ import com.luckyzyx.luckytool.ui.compose.scopes.others.KsWebPage
 import com.luckyzyx.luckytool.ui.compose.scopes.related.AndroidRelatedPage
 import com.luckyzyx.luckytool.ui.compose.scopes.related.AodRelatedPage
 import com.luckyzyx.luckytool.ui.compose.scopes.related.ApplicationRelatedPage
-import com.luckyzyx.luckytool.ui.compose.scopes.related.CorePatchPage
 import com.luckyzyx.luckytool.ui.compose.scopes.related.DialogRelatedPage
 import com.luckyzyx.luckytool.ui.compose.scopes.related.FingerPrintRelatedPage
 import com.luckyzyx.luckytool.ui.compose.scopes.related.FloatingWindowRelatedPage
@@ -583,7 +582,6 @@ object ScopePageRegistry {
         "fingerPrintRelated" to "finger_print_related",
         "soundRelated" to "sound_related",
         "aod" to "aod",
-        "corePatch" to "core_patch",
         "alphaBackupPro" to "alpha_backup_pro",
         "claw" to "claw",
         "ksWeb" to "ks_web",
@@ -660,7 +658,6 @@ object ScopePageRegistry {
         register(AndroidRelatedPage.spec)
         register(AodRelatedPage.spec)
         register(ApplicationRelatedPage.spec)
-        register(CorePatchPage.spec)
         register(DialogRelatedPage.spec)
         register(FingerPrintRelatedPage.spec)
         register(FloatingWindowRelatedPage.spec)

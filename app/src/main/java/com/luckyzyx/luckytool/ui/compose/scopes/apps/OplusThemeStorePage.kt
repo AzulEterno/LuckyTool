@@ -17,10 +17,5 @@ object OplusThemeStorePage {
         restartEnabled = true,
     ) {
         val c = requireNotNull(context) { "ScopeScreen 未注入 Context" }
-        switch(
-            key = "unlock_themestore_vip",
-            title = c.getString(R.string.unlock_themestore_vip),
-            summary = c.getString(R.string.unlock_themestore_vip_summary),
-        )
     }
 }

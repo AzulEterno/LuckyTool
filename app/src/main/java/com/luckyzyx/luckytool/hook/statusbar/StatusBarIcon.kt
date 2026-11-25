@@ -5,7 +5,6 @@ import com.luckyzyx.luckytool.hook.scopes.systemui.BluetoothIconRelated
 import com.luckyzyx.luckytool.hook.scopes.systemui.CustomFluidCloudIconBackgroundTransparency
 import com.luckyzyx.luckytool.hook.scopes.systemui.HideInActiveSignalLabelsGen2x2
 import com.luckyzyx.luckytool.hook.scopes.systemui.MobileDataIconRelated
-import com.luckyzyx.luckytool.hook.scopes.systemui.RemoveGreenDotPrivacyPrompt
 import com.luckyzyx.luckytool.hook.scopes.systemui.RemoveHighPerformanceModeIcon
 import com.luckyzyx.luckytool.hook.scopes.systemui.RemoveStatusBarSecurePayment
 import com.luckyzyx.luckytool.hook.scopes.systemui.RemoveSystemPromptIcon
@@ -38,9 +37,6 @@ object StatusBarIcon : YukiBaseHooker() {
             loadHooker(RemoveHighPerformanceModeIcon)
         }
         //移除绿点隐私提示
-        if (preferences(ModulePrefs).getBoolean("remove_green_dot_privacy_prompt", false)) {
-            loadHooker(RemoveGreenDotPrivacyPrompt)
-        }
         //移除系统提示图标
         if (preferences(ModulePrefs).getBoolean("remove_system_prompt_icon", false)) {
             loadHooker(RemoveSystemPromptIcon)

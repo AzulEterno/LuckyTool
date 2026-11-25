@@ -6,12 +6,10 @@ import com.luckyzyx.luckytool.hook.globals.HookGlobalFeatureProvider
 import com.luckyzyx.luckytool.hook.globals.HookGlobalSystemProperties
 import com.luckyzyx.luckytool.hook.scopes.settings.AllowDisablingSystemApps
 import com.luckyzyx.luckytool.hook.scopes.settings.AutoJumpAccessibilitySettings
-import com.luckyzyx.luckytool.hook.scopes.settings.AutoUnlockRestrictedSettings
 import com.luckyzyx.luckytool.hook.scopes.settings.CustomProcessorPageIntroductionParameters
 import com.luckyzyx.luckytool.hook.scopes.settings.CustomizeDeviceOTACardBackground
 import com.luckyzyx.luckytool.hook.scopes.settings.CustomizeDeviceSharingPageParameters
 import com.luckyzyx.luckytool.hook.scopes.settings.DarkModeList
-import com.luckyzyx.luckytool.hook.scopes.settings.DisableAccessibilityDialog
 import com.luckyzyx.luckytool.hook.scopes.settings.DisableAppArchiveButton
 import com.luckyzyx.luckytool.hook.scopes.settings.DisableAppArchivingUI
 import com.luckyzyx.luckytool.hook.scopes.settings.DisableSettingOtgAutoOff
@@ -65,9 +63,6 @@ object HookSettings : YukiBaseHooker() {
                 loadHooker(DarkModeList(dexKitBridge))
             }
             //自动解锁受限制的设置
-            if (preferences(ModulePrefs).getBoolean("auto_unlock_restricted_settings", false)) {
-                if (SDK >= A13) loadHooker(AutoUnlockRestrictedSettings(dexKitBridge))
-            }
             //启用应用专属媒体音量
             if (preferences(ModulePrefs).getBoolean("enable_app_specific_media_volume", false)) {
                 if (osCode >= 27) loadHooker(FixAppSpecificMediaVolumePage(dexKitBridge))
@@ -188,9 +183,6 @@ object HookSettings : YukiBaseHooker() {
         if (osCode >= 36) loadHooker(DisableAppArchiveButton)
 
         //禁用无障碍对话框 C17（与 framework 侧共用同一开关）
-        if (preferences(ModulePrefs).getBoolean("disable_accessibility_warning_dialog", false)) {
-            if (osCode >= 40) loadHooker(DisableAccessibilityDialog)
-        }
 
         //电源键
 //        //Source PowerButtonPreferenceController

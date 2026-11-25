@@ -116,16 +116,6 @@ object OplusGamesPage {
         // 工具
         category(c.getString(R.string.OplusGamesTool))
         switch(
-            key = "remove_root_check",
-            title = c.getString(R.string.remove_root_check),
-            summary = c.getString(R.string.remove_root_check_summary),
-        )
-        switch(
-            key = "remove_some_vip_limit",
-            title = c.getString(R.string.remove_some_vip_limit),
-            summary = c.getString(R.string.remove_some_vip_limit_summary),
-        )
-        switch(
             key = "enable_developer_page",
             title = c.getString(R.string.enable_developer_page),
             summary = c.getString(R.string.enable_developer_page_summary),

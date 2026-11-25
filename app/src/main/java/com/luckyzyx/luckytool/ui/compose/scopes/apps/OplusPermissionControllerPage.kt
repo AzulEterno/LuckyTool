@@ -24,10 +24,6 @@ object OplusPermissionControllerPage {
             title = c.getString(R.string.unlock_default_desktop_limit),
         )
         if (getOSVersionCode < 37) {
-            switch(
-                key = "remove_storage_permission_exception_dialog",
-                title = c.getString(R.string.remove_storage_permission_exception_dialog),
-            )
         }
     }
 }

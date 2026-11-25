@@ -40,16 +40,6 @@ object AndroidRelatedPage {
             )
         }
         if (SDK >= A12) {
-            switch(
-                key = "replace_system_root_state_detection",
-                title = c.getString(R.string.replace_system_root_state_detection),
-                summary = c.getString(R.string.need_restart_system),
-            )
-            switch(
-                key = "allow_untrusted_touch",
-                title = c.getString(R.string.allow_untrusted_touch),
-                summary = c.getString(R.string.allow_untrusted_touch_summary),
-            )
         }
         switch(
             key = "disable_long_press_home_key_start_speech_asssist",

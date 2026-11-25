@@ -165,11 +165,6 @@ object ApplicationRelatedPage {
         }
         // 应用安装
         category(c.getString(R.string.AppInstallationRelated))
-        page(
-            title = c.getString(R.string.corepatch),
-            target = "corePatch",
-            summary = c.getString(R.string.corepatch_summary, "11-17"),
-        )
         switch(
             key = "force_enable_32_bit_support",
             title = c.getString(R.string.force_enable_32_bit_support),
@@ -186,37 +181,14 @@ object ApplicationRelatedPage {
             summary = c.getString(R.string.disable_start_app_detail_summary),
         )
         switch(
-            key = "skip_apk_scan",
-            title = c.getString(R.string.skip_apk_scan),
-            summary = c.getString(R.string.skip_apk_scan_summary),
-        )
-        switch(
-            key = "allow_downgrade_install",
-            title = c.getString(R.string.allow_downgrade_install),
-            summary = c.getString(R.string.allow_downgrade_install_summary),
-        )
-        switch(
             key = "remove_install_ads",
             title = c.getString(R.string.remove_install_ads),
             summary = c.getString(R.string.remove_install_ads_summary),
         )
         switch(
-            key = "auto_click_install_button",
-            title = c.getString(R.string.auto_click_install_button),
-        )
-        switch(
-            key = "auto_click_uninstall_button",
-            title = c.getString(R.string.auto_click_uninstall_button),
-        )
-        switch(
             key = "show_more_apk_package_information",
             title = c.getString(R.string.show_more_apk_package_information),
             summary = c.getString(R.string.show_more_apk_package_information_summary),
-        )
-        switch(
-            key = "remove_adb_install_confirm",
-            title = c.getString(R.string.remove_adb_install_confirm),
-            summary = c.getString(R.string.remove_adb_install_confirm_summary),
         )
         switch(
             key = InstallerRoutingPolicy.PREFERENCE_KEY,

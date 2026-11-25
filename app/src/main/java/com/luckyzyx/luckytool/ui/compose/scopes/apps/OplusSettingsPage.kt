@@ -167,11 +167,6 @@ object OplusSettingsPage {
             title = c.getString(R.string.force_display_disabled_apps_manager),
         )
         if (SDK >= A13) {
-            switch(
-                key = "auto_unlock_restricted_settings",
-                title = c.getString(R.string.auto_unlock_restricted_settings),
-                summary = c.getString(R.string.auto_unlock_restricted_settings_summary),
-            )
         }
         switch(
             key = "auto_jump_accessibility_settings",
@@ -192,10 +187,6 @@ object OplusSettingsPage {
         switch(
             key = "force_display_password_management_settings",
             title = c.getString(R.string.restore_password_management_settings),
-        )
-        switch(
-            key = "disable_device_admin_verification_dialog",
-            title = c.getString(R.string.disable_device_admin_verification_dialog),
         )
         // 其他设置
         category(c.getString(R.string.settings_other_advanced_settings))

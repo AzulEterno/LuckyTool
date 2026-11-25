@@ -17,9 +17,5 @@ object KsWebPage {
         restartEnabled = true,
     ) {
         val c = requireNotNull(context) { "ScopeScreen 未注入 Context" }
-        switch(
-            key = "ksweb_remove_check_license",
-            title = c.getString(R.string.remove_pro_license),
-        )
     }
 }

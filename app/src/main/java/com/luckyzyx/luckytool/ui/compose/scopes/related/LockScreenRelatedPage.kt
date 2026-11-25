@@ -215,10 +215,5 @@ object LockScreenRelatedPage {
             key = "auto_wake_up_face_unlock_notification",
             title = c.getString(R.string.auto_wake_up_face_unlock_notification),
         )
-        switch(
-            key = "remove_72hour_password_verification",
-            title = c.getString(R.string.remove_72hour_password_verification),
-            summary = c.getString(R.string.remove_72hour_password_verification_summary),
-        )
     }
 }

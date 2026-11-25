@@ -2,7 +2,6 @@ package com.luckyzyx.luckytool.hook.hookers
 
 import com.highcapable.yukihookapi.hook.entity.YukiBaseHooker
 import com.luckyzyx.luckytool.hook.scopes.securitypermission.AppStartDialogUseOldVersion
-import com.luckyzyx.luckytool.hook.scopes.securitypermission.AutoUnlockAppEcmPermissionRestrict
 import com.luckyzyx.luckytool.hook.scopes.securitypermission.EnableAlwaysAllowAppStartDialog
 import com.luckyzyx.luckytool.utils.DexkitUtils
 import com.luckyzyx.luckytool.utils.ModulePrefs
@@ -24,8 +23,5 @@ object HookSecuritypPermission : YukiBaseHooker() {
             loadHooker(AppStartDialogUseOldVersion)
         }
         //自动解锁应用权限管理授权限制
-        if (preferences(ModulePrefs).getBoolean("auto_unlock_app_ecm_permission_restrict", false)) {
-            loadHooker(AutoUnlockAppEcmPermissionRestrict)
-        }
     }
 }

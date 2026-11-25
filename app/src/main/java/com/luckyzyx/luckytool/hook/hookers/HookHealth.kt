@@ -1,7 +1,6 @@
 package com.luckyzyx.luckytool.hook.hookers
 
 import com.highcapable.yukihookapi.hook.entity.YukiBaseHooker
-import com.luckyzyx.luckytool.hook.scopes.health.RemoveHealthRootCheck
 import com.luckyzyx.luckytool.utils.DexkitUtils
 import com.luckyzyx.luckytool.utils.ModulePrefs
 import org.lsposed.lsparanoid.Obfuscate
@@ -19,7 +18,6 @@ object HookHealth : YukiBaseHooker() {
         if (process.isNotEmpty() && process != "com.heytap.health") return
 
         DexkitUtils.create(appInfo.sourceDir) { dexKitBridge ->
-            loadHooker(RemoveHealthRootCheck(dexKitBridge))
         }
     }
 }

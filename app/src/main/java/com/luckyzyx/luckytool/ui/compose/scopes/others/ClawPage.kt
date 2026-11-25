@@ -17,10 +17,5 @@ object ClawPage {
         restartEnabled = true,
     ) {
         val c = requireNotNull(context) { "ScopeScreen 未注入 Context" }
-        switch(
-            key = "remove_root_detection",
-            title = c.getString(R.string.remove_root_detection),
-            summary = c.getString(R.string.remove_root_detection_summary),
-        )
     }
 }

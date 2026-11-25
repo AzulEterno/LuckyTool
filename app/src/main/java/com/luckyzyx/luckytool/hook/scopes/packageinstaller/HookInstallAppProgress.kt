@@ -22,7 +22,6 @@ import org.luckypray.dexkit.result.MethodData
 class HookInstallAppProgress(val dexKitBridge: DexKitBridge) : YukiBaseHooker() {
 
     val removeAds = preferences(ModulePrefs).getBoolean("remove_install_ads", false)
-    val autoDone = preferences(ModulePrefs).getBoolean("auto_click_install_button", false)
 
     override fun onHook() {
         //Source InstallAppProgress
@@ -54,18 +53,7 @@ class HookInstallAppProgress(val dexKitBridge: DexKitBridge) : YukiBaseHooker() 
                 }
             }.checkDataList("handleMessage").single()
 
-            val onPackageInstalled = findMethod {
-                matcher {
-                    paramTypes(classOf<Int>())
-                    usingNumbers(1)
-                    addUsingField { type(classOf<Handler>()) }
-                    addCaller { name(initView.name) }
-                    addCaller { name("onReceive") }
-                }
-            }.checkDataList("onPackageInstalled").single()
-
             if (removeAds) hookRemoveAds(initView, handleMessage)
-            if (autoDone) hookAutoDone(onPackageInstalled)
         }
     }
 
@@ -84,25 +72,6 @@ class HookInstallAppProgress(val dexKitBridge: DexKitBridge) : YukiBaseHooker() 
             firstMethod { name = handleMessage.methodName }.hook {
                 after {
                     activity?.removeViews()
-                }
-            }
-        }
-    }
-
-    @SuppressLint("DiscouragedApi")
-    fun hookAutoDone(onPackageInstalled: MethodData) {
-        onPackageInstalled.className.toClass().resolve().apply {
-            firstMethod { name = onPackageInstalled.methodName }.hook {
-                after {
-                    val activity = instance<Activity>()
-                    if ((firstArg().get<Int>() ?: 0) == 0) {
-                        activity.findViewById<Button>(
-                            activity.resources.getIdentifier(
-                                "done_button", "id",
-                                this@HookInstallAppProgress.packageName
-                            )
-                        )?.performClick()
-                    }
                 }
             }
         }
